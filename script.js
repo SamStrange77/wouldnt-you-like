@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 1);
-console.log('CHANGES: CHANGED LOCAL STORAGE');
+console.log('VERSION: ' + 2);
+console.log('CHANGES: CHANGED LOCAL STORAGE AGAIN');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 let songList = 
@@ -137,7 +137,7 @@ let gameState =
 
 //Local Storage savestate:
 
-let savedState = localStorage.getItem("savedState") ? JSON.parse(localStorage.getItem("savedState")) :
+let savedState = localStorage.getItem("saveState") ? JSON.parse(localStorage.getItem("saveState")) :
 {
   "Modes": ["songMode", "lyricMode", "audioMode"],
   "Guesses": [[], [], []],
@@ -150,7 +150,7 @@ let savedState = localStorage.getItem("savedState") ? JSON.parse(localStorage.ge
 
 function save()
 {
-    localStorage.setItem("savedState", JSON.stringify(savedState));
+    localStorage.setItem("saveState", JSON.stringify(savedState));
 }
 
 //Resetting the savestate on a new day
