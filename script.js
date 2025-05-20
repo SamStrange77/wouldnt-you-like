@@ -421,7 +421,7 @@ function start (songs, mode)
             case 2:
                 gameState.correct = gameState.song.title;
         }
-    console.log('VERSION: ' + gameState.song.version);
+    console.log('JSON VERSION: ' + gameState.song.version);
     
     document.getElementById('mode-switch').innerHTML = '';
     document.getElementById("input-field").innerHTML = 
