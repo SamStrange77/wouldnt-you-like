@@ -399,15 +399,15 @@ function start (songs, mode)
         gameState.song = getRandomElement(songs, seedify(mode));
         gameState.lyrics = gameState.song.lyrics;
         //Song
-        gameState.initialIndex = Math.floor(dailyRandom(seedify(mode)) * (gameState.lyrics.length - gameState.maxGuesses[0] - 1));
+        gameState.initialIndex = Math.floor(dailyRandom(seedify(mode+50467)) * (gameState.lyrics.length - gameState.maxGuesses[0] - 1));
         gameState.currentIndexSong = gameState.initialIndex + 1;
         //Lyric
-        gameState.finalIndex = Math.floor(dailyRandom(seedify(mode) * (gameState.lyrics.length-2-gameState.maxGuesses[1]))) + gameState.maxGuesses[1] + 1;
+        gameState.finalIndex = Math.floor(dailyRandom(seedify(mode+71413)) * (gameState.lyrics.length-2-gameState.maxGuesses[1])) + gameState.maxGuesses[1] + 1;
         gameState.currentIndexLyric = gameState.finalIndex - 1;
         //Audio
         gameState.url = gameState.song.url;
         gameState.duration = gameState.song.duration;
-        gameState.startTimestamp = Math.floor(dailyRandom(seedify(mode)) * (gameState.duration)-10000);
+        gameState.startTimestamp = Math.floor(dailyRandom(seedify(mode+40010)) * (gameState.duration)-10000);
         gameState.endTimestamp = gameState.startTimestamp + 500;
 
         switch (mode)
