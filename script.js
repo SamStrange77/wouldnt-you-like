@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 2);
-console.log('CHANGES: CHANGED LOCAL STORAGE AGAIN');
+console.log('VERSION: ' + 3);
+console.log('CHANGES: CHANGED SEED FOR RANDOMIZATION, FIXED BRACKET MISTAKE');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 let songList = 
