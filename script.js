@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 5);
-console.log('CHANGES: Put default state definition first, because yeah...');
+console.log('VERSION: ' + 5.1);
+console.log('CHANGES: Changing the if statement order in the foreach loop.');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 
@@ -160,6 +160,11 @@ Object.keys(defaultState)
       (
             key => 
             {
+                   
+                    if (!(key in savedState)) 
+                    {
+                            savedState[key] = defaultState[key];
+                    }
                     if (Array.isArray(defaultState[key])) 
                     {
                             while (savedState[key].length < defaultState[key].length) 
@@ -167,10 +172,6 @@ Object.keys(defaultState)
                                  savedState[key].push(defaultState[key][savedState[key].length]);
                             }
   
-                    } 
-                    else if (!(key in savedState)) 
-                    {
-                            savedState[key] = defaultState[key];
                     }
             }
       );
