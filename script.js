@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 6);
-console.log('CHANGES: Clipboard functionality + intermode switching.');
+console.log('VERSION: ' + 6.1);
+console.log('CHANGES: Clipboard functionality + intermode switching. + finalResults upon losing.');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 
@@ -391,6 +391,7 @@ function wrongFunc (input, mode)
         finalResultBox.style.setProperty("visibility","visible");
         finalResultBox.innerHTML += fullHint(mode);
         navigation(mode);  
+        finalResults();  
         savedState.Attempts[mode] = -1;
         savedState.Streak[mode] = 0;
         savedState.WonToday[mode] = false;
