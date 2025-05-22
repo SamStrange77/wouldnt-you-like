@@ -167,7 +167,7 @@ localStorage.setItem("saveState", JSON.stringify(savedState));
 
 let defaultState = {
   "Modes": ["songMode", "lyricMode", "audioMode"],
-  "ModeNames": ["Song", "Lyric", "Audio"];
+  "ModeNames": ["Song", "Lyric", "Audio"],
   "Guesses": [[], [], []],
   "WonToday": [false, false, false],
   "Streak": [0, 0, 0],
