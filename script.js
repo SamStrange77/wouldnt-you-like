@@ -6,6 +6,9 @@ console.log('VERSION: 6.1.2');
 console.log('CHANGES: Clipboard functionality + intermode switching. + finalResults upon losing. + wontoday = true upon loss (fixed my nth dumbass out of order mistake).');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
+//Main Page Button:
+
+document.getElementById('home').onclick = ( () => location.reload());
 
 let songList = 
 [
