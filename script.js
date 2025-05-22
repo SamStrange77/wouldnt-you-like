@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: 7');
-console.log('CHANGES: main page button.');
+console.log('VERSION: 7.1');
+console.log('CHANGES: main page button. you lost...');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -624,7 +624,7 @@ function start (songs, mode)
 
 function fullHint (mode)
 {
-    let result = savedState.WonToday[mode] ? "You Won!" : "You Lost...";
+    let result = savedState.Attempts[mode] == -1 ? "You Lost..." : "You Won!";
     let fullHints = [];
     fullHints[0] = 
     `
