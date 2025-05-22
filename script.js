@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 5.1);
-console.log('CHANGES: Changing the if statement order in the foreach loop.');
+console.log('VERSION: ' + 5.2);
+console.log('CHANGES: Changing to savedState');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 
@@ -178,7 +178,7 @@ Object.keys(defaultState)
 
 localStorage.setItem("saveState", JSON.stringify(savedState));
 
-console.log(saveState.TEST_KEY);
+console.log(savedState.TEST_KEY);
 
 function save()
 {
