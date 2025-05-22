@@ -61,10 +61,12 @@ iframe /*Soundcloud Widget Player*/
 {
   outline:none
 }
+
 #lyric-box-container /*To centre the lyric box*/
 {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 #input-field /*To centre the text box*/
 {
@@ -195,5 +197,13 @@ iframe /*Soundcloud Widget Player*/
   border-radius: 0.5rem;
   margin: 4rem 1rem;
   padding: 0.5rem 2rem;
+  visibility: hidden;
+}
+#audio-container
+{
+  visibility: hidden;
+}
+#lyrics-box
+{
   visibility: hidden;
 }
