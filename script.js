@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 5.2);
-console.log('CHANGES: Changing to savedState');
+console.log('VERSION: ' + 6);
+console.log('CHANGES: Clipboard functionality + intermode switching.');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 
@@ -49,7 +49,52 @@ let songList =
       "Odysseus",
       "I Can't Help But Wonder",
       "Would You Fall In Love With Me Again"
-]
+];
+
+
+let songListDupe = 
+[
+      "The Horse and The Infant",
+      "Just a Man",
+      "Full Speed Ahead",
+      "Open Arms",
+      "Warrior of the Mind",
+      "Polyphemus",
+      "Survive",
+      "Remember Them",
+      "My Goodbye",
+      "Storm",
+      "Luck Runs Out",
+      "Keep Your Friends Close",
+      "Ruthlessness",
+      "Puppeteer",
+      "Wouldn't You Like",
+      "Done For",
+      "There Are Other Ways",
+      "The Underworld",
+      "No Longer You",
+      "Monster",
+      "Suffering",
+      "Different Beast",
+      "Scylla",
+      "Mutiny",
+      "Thunder Bringer",
+      "Legendary",
+      "Little Wolf",
+      "We'll Be Fine",
+      "Love in Paradise",
+      "God Games",
+      "Not Sorry For Loving You",
+      "Dangerous",
+      "Charybdis",
+      "Get in the Water",
+      "Six Hundred Strike",
+      "The Challenge",
+      "Hold Them Down",
+      "Odysseus",
+      "I Can't Help But Wonder",
+      "Would You Fall In Love With Me Again"
+];
 
 //Randomisation:
 
@@ -136,11 +181,9 @@ let gameState =
     correct: ''
 };
 
-//Local Storage savestate:
 
-let savedState = localStorage.getItem("saveState")
-  ? JSON.parse(localStorage.getItem("saveState"))
-  : JSON.parse(JSON.stringify(defaultState)); // deep copy
+
+//Local Storage savestate:
 
 let defaultState = {
   "Modes": ["songMode", "lyricMode", "audioMode"],
@@ -153,6 +196,10 @@ let defaultState = {
   "Attempts": [0,0,0],
   "TEST_KEY": 'HI'
 }
+
+let savedState = localStorage.getItem("saveState")
+  ? JSON.parse(localStorage.getItem("saveState"))
+  : JSON.parse(JSON.stringify(defaultState)); // deep copy
 
 // Ensure the structure has all the new fields
 Object.keys(defaultState)
@@ -179,6 +226,8 @@ Object.keys(defaultState)
 localStorage.setItem("saveState", JSON.stringify(savedState));
 
 console.log(savedState.TEST_KEY);
+
+setupButtons();
 
 function save()
 {
@@ -275,21 +324,21 @@ let showFunc =
     () => 
     {
         let lyricBox = document.getElementById("lyrics-box");
-        lyricBox.removeAttribute('hidden')
+        lyricBox.style.setProperty('visibility','visible');
         let linesToShow = gameState.lyrics.slice(gameState.initialIndex, gameState.currentIndexSong);
         lyricBox.innerHTML = linesToShow.join(" ") + ' ... ';
     },
     () => 
     {
         let lyricBox = document.getElementById("lyrics-box");
-        lyricBox.removeAttribute('hidden')
+        lyricBox.style.setProperty('visibility','visible');
         let linesToShow = gameState.lyrics.slice(gameState.currentIndexLyric, gameState.finalIndex);
         lyricBox.innerHTML = ' ...' + linesToShow.join(" ") + ' ??? ';
     },
     () =>
     {
         const audioContainer = document.getElementById("audio-container");
-        audioContainer.removeAttribute('hidden');
+        audioContainer.style.setProperty('visibility','visible');
         audioContainer.innerHTML += 
         `
             <img id = "cover" src = "Cover.png"></img>
@@ -340,7 +389,8 @@ function wrongFunc (input, mode)
         gameState.answerRevealed = true; 
         let finalResultBox = document.getElementById('final-result');
         finalResultBox.style.setProperty("visibility","visible");
-        finalResultBox.innerHTML += fullHint(mode);    
+        finalResultBox.innerHTML += fullHint(mode);
+        navigation(mode);  
         savedState.Attempts[mode] = -1;
         savedState.Streak[mode] = 0;
         savedState.WonToday[mode] = false;
@@ -412,6 +462,7 @@ function correctFunc (input, mode)
     let finalResultBox = document.getElementById('final-result');
     finalResultBox.style.setProperty("visibility","visible");
     finalResultBox.innerHTML += fullHint(mode);
+    navigation(mode);
     finalResults();
     gameState.endTimestamp = gameState.startTimestamp + 10000;
 }
@@ -425,6 +476,29 @@ let correctFuncUnique =
 
 function start (songs, mode)
 {
+    //Reset:
+
+    document.getElementById('final-result').innerHTML = ``;
+    document.getElementById('final-result').style.setProperty('visibility','hidden');
+    document.getElementById('final-final-result').innerHTML = ``;
+    document.getElementById('final-final-result').style.setProperty('visibility','hidden');
+    document.getElementById('mode-switch').innerHTML = '';
+    document.getElementById('audio-container').innerHTML = ``;
+    document.getElementById('audio-container').style.setProperty('visibility', 'hidden');
+    document.getElementById('lyrics-box').innerHTML = ``;
+    document.getElementById('lyrics-box').style.setProperty('visibility', 'hidden');
+    document.getElementById('result').innerHTML = ``;
+    
+    songList = [];
+
+    for (let i = 0; i<songListDupe.length; i++)
+    {
+        songList.push(songListDupe[i]);
+    }
+    
+    gameState.guesses = 0;
+    gameState.answerRevealed = false;
+
     //Setting up the gamestate:
     
         //Global
@@ -453,9 +527,9 @@ function start (songs, mode)
             case 2:
                 gameState.correct = gameState.song.title;
         }
+
     console.log('JSON VERSION: ' + gameState.song.version);
     
-    document.getElementById('mode-switch').innerHTML = '';
     document.getElementById("input-field").innerHTML = 
     `
         <input 
@@ -536,6 +610,7 @@ function start (songs, mode)
     (
         element =>
         {
+            console.log(mode + ' ' + element);
             checkGuess(element, mode, true); 
         }
     );
@@ -607,6 +682,8 @@ function fullHint (mode)
 function checkGuess (userInput, mode, auto = false)
 {
     let inputBox = document.getElementById('guess-input');
+
+    console.log(userInput + ' ' + auto);
 
     //Saving the last-interacted date
 
@@ -738,6 +815,8 @@ function play ()
 
 function finalResults ()
 {
+    let copyText = "My Results for Day #" + ((initialDate - new Date(TODAY).setHours(0,0,0,0))/(-86400000) + 1) + "\n\n";
+
     finalRes = document.getElementById('final-final-result');
     finalRes.style.setProperty("visibility","visible");
     finalRes.innerHTML += 
@@ -751,18 +830,61 @@ function finalResults ()
       if (savedState.WonToday[i])
       {
         finalRes.innerHTML += `${savedState.ModeNames[i]}: ` + (savedState.Attempts[i] == -1 ? `lost :(` : `Won in ${savedState.Attempts[i]}` + (savedState.Attempts[i] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[i]})`) + `<br>`
+        copyText += `${savedState.ModeNames[i]}: ` + (savedState.Attempts[i] == -1 ? `lost :(` : `Won in ${savedState.Attempts[i]}` + (savedState.Attempts[i] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[i]})`) + `\n`
       }
     }
+    finalRes.innerHTML +=
+    `
+        <button id = "copy">
+            Copy Results!
+        </button>
+    `;
+    copyText += "\nTry it out at https://samstrange77.github.io/wouldnt-you-like";
+    document.getElementById('copy').onclick = 
+    (
+        () =>
+        {
+            navigator.clipboard.writeText(copyText);
+        }
+    )
+}
+
+//Navigator Functions:
+
+function navigation (mode)
+{
+    let finalResultBox = document.getElementById('final-result');
+    for (let i = 0; i<savedState.ModeNames.length; i++)
+    {
+        if (i == mode)
+        {
+            continue;
+        }
+        finalResultBox.innerHTML +=
+        `
+            <button id = "${savedState.Modes[i]}">
+                Play ${savedState.ModeNames[i]}
+            </button>
+        `;
+    }
+    setupButtons(mode);
 }
 
 //Setting up the buttons:
 
-for (let i = 0; i<savedState.Modes.length; i++)
+function setupButtons(mode = -1)
 {
-    document.getElementById(savedState.Modes[i]).onclick =
-    async () =>
+    for (let i = 0; i<savedState.Modes.length; i++)
     {
-        const songs = await fetchSongs();
-        start(songs, i);
-    };
+        if (i == mode)
+        {
+            continue;
+        }
+        document.getElementById(savedState.Modes[i]).onclick =
+        async () =>
+        {
+            const songs = await fetchSongs();
+            start(songs, i);
+        };
+    }
 }
