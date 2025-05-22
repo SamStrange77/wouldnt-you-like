@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 4);
-console.log('CHANGES: Updating for dynamic localstorage');
+console.log('VERSION: ' + 5);
+console.log('CHANGES: Put default state definition first, because yeah...');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 
@@ -142,6 +142,18 @@ let savedState = localStorage.getItem("saveState")
   ? JSON.parse(localStorage.getItem("saveState"))
   : JSON.parse(JSON.stringify(defaultState)); // deep copy
 
+let defaultState = {
+  "Modes": ["songMode", "lyricMode", "audioMode"],
+  "ModeNames": ["Song", "Lyric", "Audio"],
+  "Guesses": [[], [], []],
+  "WonToday": [false, false, false],
+  "Streak": [0, 0, 0],
+  "LastPlayedDate": ['','',''],
+  "LastInteractedDate": ['','',''],
+  "Attempts": [0,0,0],
+  "TEST_KEY": 'HI'
+}
+
 // Ensure the structure has all the new fields
 Object.keys(defaultState)
       .forEach
@@ -164,18 +176,6 @@ Object.keys(defaultState)
       );
 
 localStorage.setItem("saveState", JSON.stringify(savedState));
-
-let defaultState = {
-  "Modes": ["songMode", "lyricMode", "audioMode"],
-  "ModeNames": ["Song", "Lyric", "Audio"],
-  "Guesses": [[], [], []],
-  "WonToday": [false, false, false],
-  "Streak": [0, 0, 0],
-  "LastPlayedDate": ['','',''],
-  "LastInteractedDate": ['','',''],
-  "Attempts": [0,0,0],
-  "TEST_KEY": 'HI'
-}
 
 console.log(saveState.TEST_KEY);
 
