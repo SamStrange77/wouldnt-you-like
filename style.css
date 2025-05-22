@@ -207,3 +207,25 @@ iframe /*Soundcloud Widget Player*/
 {
   visibility: hidden;
 }
+#main-area
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: 2rem;
+}
+.left-main-area
+{
+  text-align: left;
+}
+#home
+{
+  text-align: center;
+}
+.centre-main-area
+{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
