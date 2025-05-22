@@ -2,9 +2,10 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: ' + 3);
-console.log('CHANGES: CHANGED SEED FOR RANDOMIZATION, FIXED BRACKET MISTAKE');
+console.log('VERSION: ' + 4);
+console.log('CHANGES: Updating for dynamic localstorage');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
+
 
 let songList = 
 [
@@ -137,16 +138,46 @@ let gameState =
 
 //Local Storage savestate:
 
-let savedState = localStorage.getItem("saveState") ? JSON.parse(localStorage.getItem("saveState")) :
-{
+let savedState = localStorage.getItem("saveState")
+  ? JSON.parse(localStorage.getItem("saveState"))
+  : JSON.parse(JSON.stringify(defaultState)); // deep copy
+
+// Ensure the structure has all the new fields
+Object.keys(defaultState)
+      .forEach
+      (
+            key => 
+            {
+                    if (Array.isArray(defaultState[key])) 
+                    {
+                            while (savedState[key].length < defaultState[key].length) 
+                            {
+                                 savedState[key].push(defaultState[key][savedState[key].length]);
+                            }
+  
+                    } 
+                    else if (!(key in savedState)) 
+                    {
+                            savedState[key] = defaultState[key];
+                    }
+            }
+      );
+
+localStorage.setItem("saveState", JSON.stringify(savedState));
+
+let defaultState = {
   "Modes": ["songMode", "lyricMode", "audioMode"],
+  "ModeNames": ["Song", "Lyric", "Audio"];
   "Guesses": [[], [], []],
   "WonToday": [false, false, false],
   "Streak": [0, 0, 0],
   "LastPlayedDate": ['','',''],
   "LastInteractedDate": ['','',''],
-  "Attempts": [0,0,0]
+  "Attempts": [0,0,0],
+  "TEST_KEY": 'HI'
 }
+
+console.log(saveState.TEST_KEY);
 
 function save()
 {
@@ -714,17 +745,12 @@ function finalResults ()
         Results for Day #${(initialDate - new Date(TODAY).setHours(0,0,0,0))/(-86400000) + 1}<br>
       </p>
     `;
-    if (savedState.WonToday[0])
+    for (let i = 0; i<savedState.ModeNames.length; i++)
     {
-        finalRes.innerHTML += `Song: ` + (savedState.Attempts[0] == -1 ? `lost :(` : `Won in ${savedState.Attempts[0]}` + (savedState.Attempts[0] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[0]})`) + `<br>`
-    }
-    if (savedState.WonToday[1])
-    {
-        finalRes.innerHTML += `Lyric: ` + (savedState.Attempts[1] == -1 ? `lost :(` : `Won in ${savedState.Attempts[1]}` + (savedState.Attempts[1] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[1]})`) + `<br>`
-    }
-    if (savedState.WonToday[2])
-    {
-        finalRes.innerHTML += `Audio: ` + (savedState.Attempts[1] == -1 ? `lost :(` : `Won in ${savedState.Attempts[2]}` + (savedState.Attempts[2] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[2]})`) + `<br>`
+      if (savedState.WonToday[i])
+      {
+        finalRes.innerHTML += `${savedState.ModeNames[i]}: ` + (savedState.Attempts[i] == -1 ? `lost :(` : `Won in ${savedState.Attempts[i]}` + (savedState.Attempts[i] == 1 ? ` try ` : ` tries `) + `(Streak: ${savedState.Streak[i]})`) + `<br>`
+      }
     }
 }
 
