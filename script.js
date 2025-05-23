@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: 9.1');
-console.log('CHANGES: final touches fixing mobile zoom');
+console.log('VERSION: 9.2');
+console.log('CHANGES: final touches fixing mobile zoom again');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
