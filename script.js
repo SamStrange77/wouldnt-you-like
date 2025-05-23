@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: 7.1');
-console.log('CHANGES: main page button. you lost...');
+console.log('VERSION: 8');
+console.log('CHANGES: tutorials');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -197,7 +197,7 @@ let defaultState = {
   "LastPlayedDate": ['','',''],
   "LastInteractedDate": ['','',''],
   "Attempts": [0,0,0],
-  "TEST_KEY": 'HI'
+  "SeenTutorial": [false, false, false]
 }
 
 let savedState = localStorage.getItem("saveState")
@@ -480,6 +480,23 @@ let correctFuncUnique =
 
 function start (songs, mode)
 {
+    if (!savedState.SeenTutorial[mode])
+    {
+        showTutorial(mode);
+    }
+
+    let howToPlayButton = document.getElementById('tut');
+
+    howToPlayButton.style.setProperty('visibility','visible');
+
+    howToPlayButton.onclick = 
+    (
+        () =>
+        {
+            showTutorial(mode);
+        }
+    )
+
     //Reset:
 
     document.getElementById('final-result').innerHTML = ``;
@@ -892,3 +909,159 @@ function setupButtons(mode = -1)
         };
     }
 }
+
+//Tutorial:
+
+function showTutorial (mode)
+{
+    document.getElementById('tutorial-overlay').classList.remove('hidden');
+    document.getElementById('modal').innerHTML = tutorials[mode];
+    document.getElementById('close_tut').onclick =
+    (
+        () =>
+        {
+            closeTutorial(mode);
+        }
+    )
+
+}
+
+function closeTutorial (mode)
+{
+    console.log(mode);
+    savedState.SeenTutorial[mode] = true;
+    save();
+    document.getElementById('tutorial-overlay').classList.add('hidden'); 
+}
+
+let tutorials = 
+[
+    `
+        <h2>
+            <b>
+                How to Play
+            </b>
+        </h2>
+        <p>
+            Guess the song from EPIC: The Musical. Changes every 24 hours<br>
+        </p>
+
+        <h2>
+            <b>
+                Song Mode
+            </b>
+        </h2>
+
+        <p>
+            In Song Mode, you get words from the lyrics as a hint:<br>
+        </p>
+
+        <div class = "answer-bubbles final-hint">
+            Who ...
+        </div>
+
+        <p>
+            Each incorrect guess reveals another word.<br>
+        </p>
+
+        <div class = "answer-bubbles final-hint">
+            Who hurts ...
+        </div>
+
+        <p>
+            Try and guess the song in as few tries as possible!
+        </p>
+
+        <div class = "answer-bubbles correct-answer">
+            Remember Them
+        </div>
+
+        <br>
+        <p>
+            Don't disappoint Athena...
+        </p>
+        <div id = "centering_button">
+            <button id="close_tut">
+                Got it!
+            </button>
+        </div>
+    `,
+    `
+        <h2>
+            <b>
+                How to Play
+            </b>
+        </h2>
+        <p>
+            Guess the next word in the song from EPIC: The Musical. Changes every 24 hours<br>
+        </p>
+
+        <h2>
+            <b>
+                Lyric Mode
+            </b>
+        </h2>
+
+        <p>
+            In Lyric Mode, you get words from the lyrics as a hint:<br>
+        </p>
+
+        <div class = "answer-bubbles final-hint">
+            ... a ???
+        </div>
+
+        <p>
+            Each incorrect guess reveals another word before the original hint.<br>
+        </p>
+
+        <div class = "answer-bubbles final-hint">
+            ... like a ???
+        </div>
+
+        <p>
+            Try and guess the word in place of the "???" in as few tries as possible!
+        </p>
+
+        <div class = "answer-bubbles correct-answer">
+            taste
+        </div>
+
+        <br>
+        <p>
+            Don't disappoint Athena...
+        </p>
+        <div id = "centering_button">
+            <button id="close_tut">
+                Got it!
+            </button>
+        </div>
+    `,
+    `
+        <h2>
+            <b>
+                How to Play
+            </b>
+        </h2>
+        <p>
+            Guess the song from EPIC: The Musical. Changes every 24 hours<br>
+        </p>
+
+        <h2>
+            <b>
+                Audio Mode
+            </b>
+        </h2>
+
+        <p>
+            In Audio Mode, you a short clip (0.5) seconds from a given song as a hint.<br><br>
+            Each incorrect guess increases the length of the clip from 0.5 seconds, starting from the same point.<br><br>
+            Try and guess the song in as few tries as possible!<br><br>
+            Don't disappoint Athena...
+        </p>
+        <div id = "centering_button">
+            <button id="close_tut">
+                Got it!
+            </button>
+        </div>
+    `
+];
