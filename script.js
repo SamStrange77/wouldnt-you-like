@@ -1,9 +1,10 @@
 let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
+let intervalCheck;
 
-console.log('VERSION: 9.2');
-console.log('CHANGES: final touches fixing mobile zoom again');
+console.log('VERSION: 10');
+console.log('CHANGES: fixed audio mode');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -807,10 +808,8 @@ function showPlayButton()
         Play
       </button>
     `
-    document.getElementById('play-button')
-    .addEventListener
+    document.getElementById('play-button').onclick =
     (
-        'click', 
         () =>
         {
             play();
@@ -821,28 +820,47 @@ function showPlayButton()
 //Playing:
 
 function play ()
-{
+{   
+    document.getElementById('play-button').innerHTML = `Playing`;
+    document.getElementById('play-button').style.setProperty('background-color', '#777');
+    document.getElementById('play-button').onclick = ( () => console.log('No lmao'));
     const iframeElement = document.getElementById('sc-widget');
     const widget = SC.Widget(iframeElement);
     widget.seekTo(gameState.startTimestamp)
     widget.play();
     // Clear any existing timer (if you want to allow multiple plays)
-    if (window.autoPauseTimeout) 
-    {
-        clearTimeout(window.autoPauseTimeout);
-    }
-    // Set a timer to pause after playDurationMs
-    window.autoPauseTimeout = setTimeout
+    intervalCheck = 
+    setInterval
     (
-        () => 
+        () =>
         {
-            widget.pause();
-        }, 
-        gameState.endTimestamp-gameState.startTimestamp
+            widget.getPosition
+            (
+                (pos) =>
+                {
+                    if(pos > gameState.endTimestamp)
+                    {
+                        pause();
+                    }
+                }
+            )
+        },
+        50
     );
     console.log(gameState.duration);
     console.log('START:' + gameState.startTimestamp);
     console.log(gameState.endTimestamp);
+}
+
+function pause ()
+{
+    document.getElementById('play-button').innerHTML = `Play`;
+    document.getElementById('play-button').style.setProperty('background-color', '#111');
+    document.getElementById('play-button').onclick = ( () => play());
+    const iframeElement = document.getElementById('sc-widget');
+    const widget = SC.Widget(iframeElement);
+    widget.pause();
+    clearInterval(intervalCheck);
 }
 
 //Displaying final results:
