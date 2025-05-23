@@ -229,3 +229,39 @@ iframe /*Soundcloud Widget Player*/
   left: 50%;
   transform: translateX(-50%);
 }
+#tut
+{
+  visibility: hidden;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+.modal {
+  background: gray;
+  border: white;
+  border-width: 0.15rem;
+  border-style: solid;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  width: 35rem;
+  text-align: left;
+  z-index: 1001;
+}
+.hidden {
+  display: none;
+}
+#centering_button
+{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
