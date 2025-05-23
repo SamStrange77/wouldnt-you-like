@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: 8');
-console.log('CHANGES: tutorials');
+console.log('VERSION: 8.1');
+console.log('CHANGES: tutorials (fixed english :skull:)');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -1053,7 +1053,7 @@ let tutorials =
         </h2>
 
         <p>
-            In Audio Mode, you a short clip (0.5) seconds from a given song as a hint.<br><br>
+            In Audio Mode, you get a short clip (0.5) seconds from a given song as a hint.<br><br>
             Each incorrect guess increases the length of the clip from 0.5 seconds, starting from the same point.<br><br>
             Try and guess the song in as few tries as possible!<br><br>
             Don't disappoint Athena...
