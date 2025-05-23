@@ -252,7 +252,7 @@ iframe /*Soundcloud Widget Player*/
   border-style: solid;
   padding: 2rem;
   border-radius: 1.5rem;
-  width: 35rem;
+  width: 38rem;
   text-align: left;
   z-index: 1001;
 }
@@ -263,7 +263,7 @@ iframe /*Soundcloud Widget Player*/
   border-style: solid;
   padding: 2rem;
   border-radius: 1.5rem;
-  width: 35rem;
+  width: 38rem;
   text-align: center;
   z-index: 1001;
 }
@@ -275,7 +275,4 @@ iframe /*Soundcloud Widget Player*/
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-* {
-  box-sizing: border-box;
 }
