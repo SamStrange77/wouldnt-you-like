@@ -2,8 +2,8 @@ let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 
-console.log('VERSION: 8.1');
-console.log('CHANGES: tutorials (fixed english :skull:)');
+console.log('VERSION: 9');
+console.log('CHANGES: final touches');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -197,7 +197,8 @@ let defaultState = {
   "LastPlayedDate": ['','',''],
   "LastInteractedDate": ['','',''],
   "Attempts": [0,0,0],
-  "SeenTutorial": [false, false, false]
+  "SeenTutorial": [false, false, false],
+  "acceptedDisclaimer": false
 }
 
 let savedState = localStorage.getItem("saveState")
@@ -235,6 +236,18 @@ setupButtons();
 function save()
 {
     localStorage.setItem("saveState", JSON.stringify(savedState));
+}
+
+if (savedState.acceptedDisclaimer)
+{
+    closeDisclaimer();
+}
+
+function closeDisclaimer()
+{
+    savedState.acceptedDisclaimer = true;
+    save();
+    document.getElementById('info-overlay').classList.add('hidden');
 }
 
 //Resetting the savestate on a new day
