@@ -276,3 +276,6 @@ iframe /*Soundcloud Widget Player*/
   align-items: center;
   flex-direction: column;
 }
+* {
+  box-sizing: border-box;
+}
