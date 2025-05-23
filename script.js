@@ -1054,7 +1054,7 @@ let tutorials =
 
         <p>
             In Audio Mode, you get a short clip (0.5) seconds from a given song as a hint.<br><br>
-            Each incorrect guess increases the length of the clip from 0.5 seconds, starting from the same point.<br><br>
+            Each incorrect guess increases the length of the clip by 0.5 seconds, starting from the same point.<br><br>
             Try and guess the song in as few tries as possible!<br><br>
             Don't disappoint Athena...
         </p>
