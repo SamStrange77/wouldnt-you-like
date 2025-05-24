@@ -3,8 +3,8 @@ let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 let intervalCheck;
 
-console.log('VERSION: 10');
-console.log('CHANGES: fixed audio mode');
+console.log('VERSION: 10.1');
+console.log('CHANGES: fixing lyric mode disp');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -557,7 +557,7 @@ function start (songs, mode)
                 gameState.correct = gameState.song.title;
                 break;
             case 1:
-                gameState.correct = gameState.song.words[gameState.finalIndex];
+                gameState.correct = gameState.song.lyrics[gameState.finalIndex];
                 break;
             case 2:
                 gameState.correct = gameState.song.title;
