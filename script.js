@@ -3,8 +3,8 @@ let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
 let intervalCheck;
 
-console.log('VERSION: 10.1');
-console.log('CHANGES: fixing lyric mode disp');
+console.log('VERSION: 11');
+console.log('CHANGES: fixing streaks');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -468,7 +468,7 @@ function correctFunc (input, mode)
       today.setHours(0,0,0,0)
       if ((today - LastDate)/(1000*60*60*24) > 1)
       {
-        savedState.SongStreak = 0;
+        savedState.Streak[mode] = 0;
       }
       savedState.Streak[mode]++;
       savedState.Attempts[mode] = gameState.guesses;
