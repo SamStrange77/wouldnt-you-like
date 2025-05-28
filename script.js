@@ -1,60 +1,24 @@
 let initialDate = new Date("2025-05-20").setHours(0,0,0,0);
 let TODAY = new Date().toISOString().split("T")[0];
 let songListModes = [0, 2];
+let charListModes = [3];
 let intervalCheck;
 
-console.log('VERSION: 11');
-console.log('CHANGES: fixing streaks');
+console.log('VERSION: 12');
+console.log('CHANGES: CHARACTER MODE + minor tweaks');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
 
-document.getElementById('home').onclick = ( () => location.reload());
+document.getElementById('home').onclick = 
+    (
+        () =>
+        {
+             location.reload();
+        }
+    );
 
-let songList = 
-[
-      "The Horse and The Infant",
-      "Just a Man",
-      "Full Speed Ahead",
-      "Open Arms",
-      "Warrior of the Mind",
-      "Polyphemus",
-      "Survive",
-      "Remember Them",
-      "My Goodbye",
-      "Storm",
-      "Luck Runs Out",
-      "Keep Your Friends Close",
-      "Ruthlessness",
-      "Puppeteer",
-      "Wouldn't You Like",
-      "Done For",
-      "There Are Other Ways",
-      "The Underworld",
-      "No Longer You",
-      "Monster",
-      "Suffering",
-      "Different Beast",
-      "Scylla",
-      "Mutiny",
-      "Thunder Bringer",
-      "Legendary",
-      "Little Wolf",
-      "We'll Be Fine",
-      "Love in Paradise",
-      "God Games",
-      "Not Sorry For Loving You",
-      "Dangerous",
-      "Charybdis",
-      "Get in the Water",
-      "Six Hundred Strike",
-      "The Challenge",
-      "Hold Them Down",
-      "Odysseus",
-      "I Can't Help But Wonder",
-      "Would You Fall In Love With Me Again"
-];
-
+let songList = [];
 
 let songListDupe = 
 [
@@ -99,6 +63,89 @@ let songListDupe =
       "I Can't Help But Wonder",
       "Would You Fall In Love With Me Again"
 ];
+
+let charList = [];
+
+let charListDupe = 
+[
+    "Odysseus Troy Saga|",
+    "Odysseus Cyclops Saga|",
+    "Odysseus Ocean Saga|",
+    "Odysseus Circe Saga|",
+    "Odysseus Underworld Saga|",
+    "Odysseus Thunder Saga|",
+    "Odysseus Wisdom Saga|",
+    "Odysseus Vengeance Saga|",
+    "Odysseus Ithaca Saga|",
+    "Soldiers|",
+    "Zeus|",
+    "Ensemble|",
+    "Crew|",
+    "Eurylochus|",
+    "Polites|",
+    "Lotus Eaters|",
+    "Athena|",
+    "Polyphemus|",
+    "Cyclopes|",
+    "Perimedes|",
+    "Elpenor|",
+    "Aeolus|",
+    "Winions|",
+    "Penelope|",
+    "Telemachus|",
+    "Poseidon|",
+    "Circe|",
+    "Hermes|",
+    "Dead Crew|",
+    "Anticlea|(Odysseus' Mom)",
+    "Tiresias|(The Prophet)",
+    "Siren Penelope|",
+    "Sirens|",
+    "Scylla|",
+    "Suitors|",
+    "Antinous|",
+    "Calypso|",
+    "Audience|(God Games)",
+    "Apollo|",
+    "Hephaestus|",
+    "Aphrodite|",
+    "Ares|",
+    "Hera|",
+    "Eurymachus|(A Suitor)",
+    "Amphinomus|(A Suitor)",
+    "Melanthius|(A Servant)"
+];
+
+function populate_lists ()
+{
+    songList = [];
+    charList = [];
+    
+    let dataListSong = document.getElementById('song-names');
+    let dataListChar = document.getElementById('char-names');
+
+    dataListSong.innerHTML = ``;
+    dataListChar.innerHTML = ``;
+
+    for (let i = 0; i<songListDupe.length; i++)
+    {
+        songList.push(songListDupe[i]);
+        dataListSong.innerHTML +=
+        `
+            <option value = "${songListDupe[i]}"></option>
+        `
+    }
+
+    for (let i = 0; i<charListDupe.length; i++)
+    {
+        charList.push(charListDupe[i]);
+        dataListChar.innerHTML +=
+        `
+            <option value = "${charListDupe[i].split("|")[0]}">${charListDupe[i].split("|")[1]}</option>
+        `
+    }
+
+}
 
 //Randomisation:
 
@@ -176,13 +223,16 @@ let gameState =
     startTimestamp: 0,
     endTimestamp: 0,
     url : '',
+    //Character:
+    currentIndexCharacter: 0,
     //Global
     song: null,
     lyrics: [],
     guesses: 0,
-    maxGuesses: [20, 35, 20],
+    maxGuesses: [20, 35, 20, 15],
     answerRevealed: false,
-    correct: ''
+    displayCorrect: '',
+    checkCorrect: ''
 };
 
 
@@ -190,15 +240,15 @@ let gameState =
 //Local Storage savestate:
 
 let defaultState = {
-  "Modes": ["songMode", "lyricMode", "audioMode"],
-  "ModeNames": ["Song", "Lyric", "Audio"],
-  "Guesses": [[], [], []],
-  "WonToday": [false, false, false],
-  "Streak": [0, 0, 0],
-  "LastPlayedDate": ['','',''],
-  "LastInteractedDate": ['','',''],
-  "Attempts": [0,0,0],
-  "SeenTutorial": [false, false, false],
+  "Modes": ["songMode", "lyricMode", "audioMode", "characterMode"],
+  "ModeNames": ["Song", "Lyric", "Audio", "Character"],
+  "Guesses": [[], [], [], []],
+  "WonToday": [false, false, false, false],
+  "Streak": [0, 0, 0, 0],
+  "LastPlayedDate": ['','','', ''],
+  "LastInteractedDate": ['','','',''],
+  "Attempts": [0,0,0,0],
+  "SeenTutorial": [false, false, false, false],
   "acceptedDisclaimer": false
 }
 
@@ -309,6 +359,7 @@ async function fetchSongs()
     "i-cant-help-but-wonder.json",
     "would-you-fall-in-love-with-me-again.json"
   ];
+
   
   const songs = await Promise.all(
     files.map
@@ -384,6 +435,19 @@ let showFunc =
                 showPlayButton();
             }
         );
+    },
+    () =>
+    {
+        let charBox = document.getElementById("character-box");
+        let lyricBox = document.getElementById("lyrics-box");
+        if (gameState.guesses > 0)
+        {
+            lyricBox.style.setProperty('visibility','visible');
+            let linesToShow = gameState.lyrics.slice(gameState.currentIndexCharacter, gameState.finalIndex);
+            lyricBox.innerHTML = ' ...' + linesToShow.join(" ") + ' ... ';
+        }
+        charBox.style.setProperty('visibility','visible');
+        charBox.innerHTML = `${gameState.lyrics[gameState.finalIndex]}`;
     }
 ]
 
@@ -439,6 +503,11 @@ let wrongFuncUnique =
     (input) =>
     {
         gameState.endTimestamp+=500;
+    },
+    (input) =>
+    {
+        gameState.currentIndexCharacter--;
+        showFunc[3]();
     }
 ];
 
@@ -449,7 +518,7 @@ function correctFunc (input, mode)
     document.getElementById("result").innerHTML = 
     `
       <div class = "answer-bubbles correct-answer hoverable">
-        ${gameState.correct}
+        ${gameState.displayCorrect}
       </div>
     ` + document.getElementById("result").innerHTML;
     gameState.answerRevealed = true;
@@ -485,9 +554,26 @@ function correctFunc (input, mode)
     gameState.endTimestamp = gameState.startTimestamp + 10000;
 }
 
-let correctFuncUnique =
-[
 
+
+let correctCondition =
+[
+    (input) =>
+    {
+        return standardize(gameState.checkCorrect.trim().toLowerCase()) == standardize(input.trim().toLowerCase());
+    },
+    (input) =>
+    {
+       return standardize(gameState.checkCorrect.trim().toLowerCase()) == standardize(input.trim().toLowerCase());
+    },
+    (input) =>
+    {
+        return standardize(gameState.checkCorrect.trim().toLowerCase()) == standardize(input.trim().toLowerCase());
+    },
+    (input) =>
+    {
+        return gameState.checkCorrect.split("/").includes(input);
+    },
 ];
 
 //Start function:
@@ -523,13 +609,9 @@ function start (songs, mode)
     document.getElementById('lyrics-box').innerHTML = ``;
     document.getElementById('lyrics-box').style.setProperty('visibility', 'hidden');
     document.getElementById('result').innerHTML = ``;
+    document.getElementById('character-box').style.setProperty('visibility','hidden');
     
-    songList = [];
-
-    for (let i = 0; i<songListDupe.length; i++)
-    {
-        songList.push(songListDupe[i]);
-    }
+    populate_lists();
     
     gameState.guesses = 0;
     gameState.answerRevealed = false;
@@ -543,24 +625,34 @@ function start (songs, mode)
         gameState.initialIndex = Math.floor(dailyRandom(seedify(mode+50467)) * (gameState.lyrics.length - gameState.maxGuesses[0] - 1));
         gameState.currentIndexSong = gameState.initialIndex + 1;
         //Lyric
-        gameState.finalIndex = Math.floor(dailyRandom(seedify(mode+71413)) * (gameState.lyrics.length-2-gameState.maxGuesses[1])) + gameState.maxGuesses[1] + 1;
+        gameState.finalIndex = Math.floor(dailyRandom(seedify(mode+(71413*mode))) * (gameState.lyrics.length-2-gameState.maxGuesses[mode])) + gameState.maxGuesses[mode] + 1;
         gameState.currentIndexLyric = gameState.finalIndex - 1;
         //Audio
         gameState.url = gameState.song.url;
         gameState.duration = gameState.song.duration;
         gameState.startTimestamp = Math.floor(dailyRandom(seedify(mode+40010)) * (gameState.duration)-10000);
         gameState.endTimestamp = gameState.startTimestamp + 500;
+        //Character
+        gameState.currentIndexCharacter = gameState.finalIndex;
 
         switch (mode)
         {
             case 0:
-                gameState.correct = gameState.song.title;
+                gameState.displayCorrect = gameState.song.title;
+                gameState.checkCorrect = gameState.song.title;
                 break;
             case 1:
-                gameState.correct = gameState.song.lyrics[gameState.finalIndex];
+                gameState.displayCorrect = gameState.song.lyrics[gameState.finalIndex];
+                gameState.checkCorrect = gameState.song.words[gameState.finalIndex];
                 break;
             case 2:
-                gameState.correct = gameState.song.title;
+                gameState.checkCorrect = gameState.song.title;
+                gameState.displayCorrect = gameState.song.title;
+                break;
+            case 3:
+                gameState.displayCorrect = gameState.song.singers[gameState.finalIndex];
+                gameState.checkCorrect = gameState.song.singers[gameState.finalIndex];
+                break;
         }
 
     console.log('JSON VERSION: ' + gameState.song.version);
@@ -568,7 +660,7 @@ function start (songs, mode)
     document.getElementById("input-field").innerHTML = 
     `
         <input 
-            ${ (songListModes.includes(mode)) ? `list = "song-names"` : ``} 
+            ${ (songListModes.includes(mode)) ? `list = "song-names"` : (charListModes.includes(mode)) ? `list = char-names` : ``} 
             class = "input-fields" 
             id="guess-input" 
             placeholder="Type your guess!"
@@ -599,6 +691,25 @@ function start (songs, mode)
                 }
             }
         );
+    }
+    else if (charListModes.includes(mode))
+    {
+        inputBox
+        .addEventListener
+        (
+            "blur",
+            function () 
+            {
+                const input = this.value;
+                const options = Array.from(document.querySelectorAll("#char-names option"))
+                                     .map(option => option.value);
+                console.log(options);
+                if (!options.includes(input)) 
+                {
+                    this.value = "";  // Clear the input if not valid
+                }
+            }
+        );    
     }
     else
     {
@@ -669,7 +780,7 @@ function fullHint (mode)
             ${gameState.lyrics.slice(gameState.initialIndex,gameState.initialIndex+21).join(" ")}
         </div>
         <div class = "answer-bubbles correct-answer">
-            ${gameState.correct}
+            ${gameState.displayCorrect}
         </div>
     `;
     fullHints[1] = 
@@ -705,7 +816,25 @@ function fullHint (mode)
             <br>
         </p>
         <div class = "answer-bubbles correct-answer">
-            ${gameState.correct}
+            ${gameState.displayCorrect}
+        </div>
+    `;
+    fullHints[3] = 
+    `
+        <p>
+            ${result}<br>
+            ${!savedState.WonToday[mode] ? `` : `Number of tries: ${gameState.guesses}`}<br>
+            <br>
+            Entire hint:
+        </p>
+        <div class = "answer-bubbles final-hint">
+            ${gameState.lyrics.slice(gameState.finalIndex-gameState.maxGuesses[3],gameState.finalIndex).join(" ")}
+        </div>
+        <div class = "answer-bubbles character-mode">
+            ${gameState.lyrics[gameState.finalIndex]}
+        </div>
+        <div class = "answer-bubbles correct-answer">
+            - ${gameState.displayCorrect}
         </div>
     `;
 
@@ -726,7 +855,12 @@ function checkGuess (userInput, mode, auto = false)
     save();
 
     if (gameState.answerRevealed) return;
-    if (userInput === '') return;
+    if (userInput === '') 
+    {
+        console.log('empty');
+        
+            return;
+    }
     //Verifying that the song is in the list and also removing it from the list if it is
     if (songListModes.includes(mode))
     {
@@ -753,6 +887,31 @@ function checkGuess (userInput, mode, auto = false)
             }
         }
     }
+    if (charListModes.includes(mode))
+    {
+        if (!charList.map((element) => element.split("|")[0]).includes(userInput))
+        {    
+            inputBox.value = "";
+            return;
+        }
+        else
+        {
+            for (let i = 0; i<document.getElementById("char-names").children.length; i++)
+            {
+                if (document.getElementById("char-names").children[i].value === userInput)
+                {
+                    document.getElementById("char-names").removeChild(document.getElementById("char-names").children[i]);
+                }
+            }
+            for (let i = 0; i<charList.length; i++)
+            {
+                if (charList[i] === userInput)
+                {
+                    charList.splice(i, 1);
+                }
+            }
+        }
+    }
     console.log('hi');
     //Resetting the box
     inputBox.value = "";
@@ -763,7 +922,7 @@ function checkGuess (userInput, mode, auto = false)
     }
     save();
     //If correct:
-    if (standardize(gameState.correct.trim().toLowerCase()) == standardize(userInput.trim().toLowerCase()))
+    if (correctCondition[mode](userInput))
     {
         correctFunc(userInput, mode);
     }
@@ -915,7 +1074,7 @@ function navigation (mode)
         finalResultBox.innerHTML +=
         `
             <button id = "${savedState.Modes[i]}">
-                Play ${savedState.ModeNames[i]}
+                Play ${savedState.ModeNames[i]}!
             </button>
         `;
     }
@@ -1088,6 +1247,69 @@ let tutorials =
             Each incorrect guess increases the length of the clip by 0.5 seconds, starting from the same point.<br><br>
             Try and guess the song in as few tries as possible!<br><br>
             Don't disappoint Athena...
+        </p>
+        <div id = "centering_button">
+            <button id="close_tut">
+                Got it!
+            </button>
+        </div>
+    `,
+    
+    `
+        <h2>
+            <b>
+                How to Play
+            </b>
+        </h2>
+        <p>
+            Guess the character from EPIC: The Musical. Changes every 24 hours<br>
+        </p>
+
+        <h2>
+            <b>
+                Character Mode
+            </b>
+        </h2>
+
+        <p>
+            In Character Mode, you get a word (gold), for which you have to guess the character that said it.<br><br>
+        </p>
+
+
+        <div class = "answer-bubbles character-mode">
+            like
+        </div>
+        <br>
+            Each incorrect word adds an extra word. However, you only have to guess the speaker for the word in gold.<br><br>
+           
+        <div class = "answer-bubbles final-hint">
+            ... mistake
+        </div>
+        
+
+        <div class = "answer-bubbles character-mode">
+            like
+        </div>
+        <br>
+        <p>
+            Try and guess the character in as few tries as possible!<br><br>
+        </p>
+        <div class = "answer-bubbles correct-answer">
+            Odysseus Thunder Saga
+        </div>
+
+        <h2>
+            <b>
+                Notes
+            </b>
+        </h2>
+        <p>
+            1) Odysseus is split across Sagas. Thus, Odysseus in Troy Saga is different from Odysseus in Vengeance Saga, for example.<br><br>
+            2) Ensembles are named differently depending on the context (Eg. Suitors/Crew/Audience). You must pick appropriately.<br><br>
+            3) If two people are singing the same lines at the same time, both are an acceptable answer.<br><br>
+            This mode is a bit subjective, so I apologise if you think an answer is right when it isn't.<br><br>
+
+            Regardless, don't disappoint Athena...
         </p>
         <div id = "centering_button">
             <button id="close_tut">
