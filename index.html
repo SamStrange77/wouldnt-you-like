@@ -1,7 +1,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Wouldn't-You-Like</title>
         <link rel="stylesheet" href="style.css" />
     </head>
@@ -64,6 +64,13 @@
                 <br>
                 Find the song with as few seconds of audio as possible
             </button>
+            <button id = "characterMode" class = "new">
+                <b>
+                    Character (New!)
+                </b>
+                <br>
+                Find the Character with as few words as possible
+            </button>
             <br>
             <p>
                 <h2>
@@ -88,6 +95,7 @@
         <div id="game-area"></div>
         <div id = "lyric-box-container">
             <div id="lyrics-box"></div>
+            <div id = "character-box"></div>
             <div id = "audio-container"></div>
         </div>
         <div id="tries"></div>
@@ -105,47 +113,10 @@
             <div id = "final-final-result" hidden></div>
         </div>
         <datalist id = "song-names">
-                <option value="The Horse and The Infant"></option>
-                <option value="Just a Man"></option>
-                <option value="Full Speed Ahead"></option>
-                <option value="Open Arms"></option>
-                <option value="Warrior of the Mind"></option>
-                <option value="Polyphemus"></option>
-                <option value="Survive"></option>
-                <option value="Remember Them"></option>
-                <option value="My Goodbye"></option>
-                <option value="Storm"></option>
-                <option value="Luck Runs Out"></option>
-                <option value="Keep Your Friends Close"></option>
-                <option value="Ruthlessness"></option>
-                <option value="Puppeteer"></option>
-                <option value="Wouldn't You Like"></option>
-                <option value="Done For"></option>
-                <option value="There Are Other Ways"></option>
-                <option value="The Underworld"></option>
-                <option value="No Longer You"></option>
-                <option value="Monster"></option>
-                <option value="Suffering"></option>
-                <option value="Different Beast"></option>
-                <option value="Scylla"></option>
-                <option value="Mutiny"></option>
-                <option value="Thunder Bringer"></option>
-                <option value="Legendary"></option>
-                <option value="Little Wolf"></option>
-                <option value="We'll Be Fine"></option>
-                <option value="Love in Paradise"></option>
-                <option value="God Games"></option>
-                <option value="Not Sorry For Loving You"></option>
-                <option value="Dangerous"></option>
-                <option value="Charybdis"></option>
-                <option value="Get in the Water"></option>
-                <option value="Six Hundred Strike"></option>
-                <option value="The Challenge"></option>
-                <option value="Hold Them Down"></option>
-                <option value="Odysseus"></option>
-                <option value="I Can't Help But Wonder"></option>
-                <option value="Would You Fall In Love With Me Again"></option>
-            </datalist>
+        </datalist>
+            
+        <datalist id = "char-names">
+        </datalist>
         <script src="https://w.soundcloud.com/player/api.js"></script>
         <script src="script.js"></script>
     </body>
