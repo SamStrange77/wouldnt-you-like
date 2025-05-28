@@ -255,6 +255,9 @@ iframe /*Soundcloud Widget Player*/
   width: 38rem;
   text-align: left;
   z-index: 1001;
+  overflow: auto;
+  max-height:75%;
+  scrollbar-color: transparent;
 }
 .modal2 {
   background: gray;
@@ -266,6 +269,9 @@ iframe /*Soundcloud Widget Player*/
   width: 38rem;
   text-align: center;
   z-index: 1001;
+  overflow: auto;
+  max-height:75%;
+  scrollbar-color: transparent;
 }
 .hidden {
   display: none;
@@ -275,4 +281,34 @@ iframe /*Soundcloud Widget Player*/
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+#character-box {
+  background-color: #E1AC27;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  max-width: 35rem;
+  text-align: left;
+  border-radius: 0.5rem;
+  visibility: hidden;
+}
+
+#who-said {
+  background-color: transparent;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  max-width: 35rem;
+  text-align: left;
+  border-radius: 0.5rem;
+  visibility: hidden;
+}
+.character-mode
+{
+  background-color: #E1AC27;
+  color: white;
+}
+.new
+{
+  background-color: #E1AC27;
 }
