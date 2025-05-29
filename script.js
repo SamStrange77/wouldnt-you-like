@@ -470,11 +470,11 @@ function wrongFunc (input, mode)
         gameState.answerRevealed = true; 
         let finalResultBox = document.getElementById('final-result');
         finalResultBox.style.setProperty("visibility","visible");
-        finalResultBox.innerHTML += fullHint(mode);
-        navigation(mode);  
         savedState.Attempts[mode] = -1;
         savedState.Streak[mode] = 0;
         savedState.WonToday[mode] = true;
+        finalResultBox.innerHTML += fullHint(mode);
+        navigation(mode);  
         finalResults();  
         save();
     }
