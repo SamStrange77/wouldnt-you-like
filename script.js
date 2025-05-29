@@ -4,8 +4,8 @@ let songListModes = [0, 2];
 let charListModes = [3];
 let intervalCheck;
 
-console.log('VERSION: 12');
-console.log('CHANGES: CHARACTER MODE + minor tweaks');
+console.log('VERSION: 12.1');
+console.log('CHANGES: you lost correctly');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
