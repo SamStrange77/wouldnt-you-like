@@ -4,8 +4,8 @@ let songListModes = [0, 2];
 let charListModes = [3];
 let intervalCheck;
 
-console.log('VERSION: 12.1');
-console.log('CHANGES: you lost correctly');
+console.log('VERSION: 13');
+console.log('CHANGES: Theme changes!');
 console.log(TODAY + ': ' + dailyRandom(seedify(12)));
 
 //Main Page Button:
@@ -18,6 +18,68 @@ document.getElementById('home').onclick =
         }
     );
 
+
+//Daily Theme Changes
+
+let body = document.body;
+
+let themes = 
+[
+    {
+        color: 'troy',
+        names: ['You are a|WarriorOfTheMind||Well done! Enlighten me, what\'s your name?|You disappoint me...']
+    },
+    {
+        color: 'cyclops',
+        names: ['|Defeat|is not allowed.|I\'ve gotta hand it to you, this is quite the treat!|I warned ya, and you failed the test!']
+    },
+    {
+        color: 'ocean',
+        names: ['How much longer till your|LuckRunsOut?||Why did we doubt that you could figure this out?|You relied on wit, and then we died on it, woah...']
+    },
+    {
+        color: 'circe',
+        names: ['|Wouldn\'tYouLike|A taste of the power?|No, you\'re not a player, you\'re a puppeteer, yeah!|You\'ve made your one wrong move, now you\'re done for...']
+    },
+    {
+        color: 'underworld',
+        names: ['But it\'s|NoLongerYou...||You became the Monster!|Were Circe\'s instructions unclear...?']
+    },
+    {
+        color: 'thunder',
+        names: ['If you want|AllThePower|You must carry all the blame!|You are a different beast now!|You\'ve doomed us...You\'ve doomed us all!','|ThunderBringHer|Through the wringer|You are a different beast now!|You\'ve doomed us...You\'ve doomed us all!']
+    },
+    {
+        color: 'wisdom',
+        names: ['I wanna be|L-L-L-L-Legendary||You overcame these obstacles and scrutiny!|Whatchu gonna do about it, champ?','Fight,|LittleWolf|Fight!|One young wolf has a larger heart than all these men combined!|Go back and cry in your corner...','Why not make it a|Game?||I\'ve played your game and won! Release him!|No one beats me! No one wins my game!']
+    },
+    {
+        color: 'vengeance',
+        names: ['It\'s gonna be|Dangerous|My friend!|Every trick, every skill was put to use for this!|You idiot...Can\'t you see?']
+    },
+    {
+        color: 'ithaca',
+        names: ['Is it finally time for|TheChallenge|I arranged?|You\'re more cunning than I assumed!|I doubt you can string this...You don\'t have the power...']
+    }
+]
+
+let day = Math.floor((new Date(TODAY).setHours(0,0,0,0))/(60*24*60*1000))%9;
+let text = getRandomElement(themes[day].names, seedify(day));
+let loseMsg = '';
+let winMsg = ''
+
+body.style.setProperty('background-color',`var(--${themes[day].color})`);
+body.style.setProperty('color',`var(--${themes[day].color}text)`);
+
+document.getElementById('pretext').innerHTML = text.split('|')[0];
+document.getElementById('maintext').innerHTML = text.split('|')[1];
+document.getElementById('posttext').innerHTML = text.split('|')[2];
+loseMsg = text.split('|')[4];
+winMsg = text.split('|')[3];
+
+
+//Lists:
+    
 let songList = [];
 
 let songListDupe = 
@@ -766,7 +828,7 @@ function start (songs, mode)
 
 function fullHint (mode)
 {
-    let result = savedState.Attempts[mode] == -1 ? "You Lost..." : "You Won!";
+    let result = savedState.Attempts[mode] == -1 ? "You lost...<br>"+loseMsg : "You won!<br>"+winMsg;
     let fullHints = [];
     fullHints[0] = 
     `
