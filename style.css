@@ -1,8 +1,39 @@
+:root
+{
+  --wrong: #B10000;
+  --correct: #008204;
+
+  --troy: #0F4BAB;
+  --troytext: #eee;
+  --cyclops: #850303;
+  --cyclopstext: #eee;
+  --ocean: #298CF0;
+  --oceantext: #eee;
+  --circe: #EC29F0;
+  --circetext: #eee;
+  --underworld: #00612c;
+  --underworldtext: #eee;
+  --thunder: #FFE600;
+  --thundertext: #111;
+  --wisdom: #470191;
+  --wisdomtext: #eee;
+  --vengeance: #046875;
+  --vengeancetext: #eee;
+  --ithaca: #750404;
+  --ithacatext: #eee;
+
+  /*
+    acc-wrong: #FF2525
+    acc-right: 39F73F
+  */
+
+}
+
 body /*Background*/ 
 {
   font-family: sans-serif;
   text-align: center;
-  background-color: #00612c;
+  background-color: white;
   color: #eee;
   padding: 2rem;
 } 
@@ -51,6 +82,7 @@ iframe /*Soundcloud Widget Player*/
 #lyrics-box /*Box for lyrics for Song and Lyric*/
 {
    background-color: #151924;
+   color: #eee;
    margin: 1rem 5rem;
    padding: 0.5rem 1rem;
    width: 35rem;
@@ -100,6 +132,7 @@ iframe /*Soundcloud Widget Player*/
    width: 33rem;
    text-align: left;
    border-radius: 0.5rem;
+   color: #eee;
 }
 .hoverable /*To define the hover zoom*/
 {
@@ -112,12 +145,12 @@ iframe /*Soundcloud Widget Player*/
 /*Colours for the answer bubbles*/
 .wrong-answer
 {
-  background-color: rgb(177, 0, 0);
+  background-color: var(--wrong);
   color:white;
 }
 .correct-answer
 {
-  background-color: rgb(0, 130, 4);
+  background-color: var(--correct);
   color: white;
 }
 #result
@@ -284,17 +317,6 @@ iframe /*Soundcloud Widget Player*/
 }
 #character-box {
   background-color: #E1AC27;
-  margin: 1rem auto;
-  padding: 0.5rem 1rem;
-  width: 100%;
-  max-width: 35rem;
-  text-align: left;
-  border-radius: 0.5rem;
-  visibility: hidden;
-}
-
-#who-said {
-  background-color: transparent;
   margin: 1rem auto;
   padding: 0.5rem 1rem;
   width: 100%;
